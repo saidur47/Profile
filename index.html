@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Md. Saidur Rahman — Computer Science, Florida State University</title>
+<meta name="description" content="Personal site of Md. Saidur Rahman, PhD student in Computer Science at Florida State University, researching disaggregated memory and distributed systems.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2218%22 fill=%22%232E6F6B%22/><text x=%2250%22 y=%2266%22 font-size=%2246%22 font-family=%22Georgia,serif%22 fill=%22%23EEF0F4%22 text-anchor=%22middle%22>SR</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,440;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  .skip-link{
+    position:absolute;
+    left:-9999px;
+    top:0;
+    background:var(--panel);
+    color:var(--ink);
+    padding:0.7rem 1.2rem;
+    border:1px solid var(--line);
+    border-radius:4px;
+    font-family:var(--sans);
+    font-size:0.9rem;
+    z-index:50;
+    text-decoration:none;
+  }
+  .skip-link:focus{left:1rem; top:1rem;}
+
+  :root{
+    --paper:#101318;
+    --panel:#171B22;
+    --ink:#F1F4F7;
+    --ink-soft:#C3C9D4;
+    --ink-faint:#949DAD;
+    --line:#2B313C;
+    --accent:#79C4BE;
+    --accent-soft:#1A302E;
+    --accent-warm:#E19A5F;
+    --serif:'Fraunces', serif;
+    --sans:'Inter', sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+    --nav-w: 264px;
+    --max: 860px;
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:var(--accent);}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+
+
+  h1,h2,h3{
+    font-family:var(--serif);
+    font-weight:500;
+    color:var(--ink);
+    margin:0 0 0.5em;
+  }
+
+  p{margin:0 0 1em; color:var(--ink-soft);}
+  p:last-child{margin-bottom:0;}
+
+  /* ---------- Spine nav ---------- */
+  .spine{
+    position:fixed;
+    top:0; left:0; bottom:0;
+    width:var(--nav-w);
+    padding:2.6rem 2rem;
+    border-right:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    z-index:20;
+  }
+  .spine-top .mark{
+    font-family:var(--serif);
+    font-size:1.35rem;
+    font-weight:600;
+    color:var(--ink);
+    text-decoration:none;
+    display:block;
+  }
+  .spine-top .mark-sub{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:var(--ink-faint);
+    margin-top:0.4rem;
+    line-height:1.5;
+  }
+  .spine nav{margin-top:3rem;}
+  .spine nav ul{list-style:none; margin:0; padding:0;}
+  .spine nav li{margin-bottom:0.9rem;}
+  .spine nav a{
+    text-decoration:none;
+    color:var(--ink-soft);
+    font-size:0.95rem;
+    position:relative;
+    padding-bottom:2px;
+    transition:color 0.15s ease;
+  }
+  .spine nav a::after{
+    content:"";
+    position:absolute; left:0; bottom:-2px;
+    width:0; height:1px;
+    background:var(--accent);
+    transition:width 0.2s ease;
+  }
+  .spine nav a:hover, .spine nav a.active{color:var(--ink);}
+  .spine nav a:hover::after, .spine nav a.active::after{width:100%;}
+
+
+  .mobile-bar{display:none;}
+
+  /* ---------- Main ---------- */
+  main{
+    margin-left:var(--nav-w);
+    padding:0 3.2rem 6rem;
+  }
+  section{
+    max-width:var(--max);
+    margin-left:auto;
+    margin-right:auto;
+    padding-top:5.2rem;
+  }
+  section:first-of-type{padding-top:4.6rem;}
+
+  .kicker{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:var(--accent);
+    letter-spacing:0.02em;
+    margin:0 0 0.9rem;
+  }
+
+  .rule{
+    border:none;
+    border-top:1px solid var(--line);
+    margin:5rem auto 0;
+    max-width:var(--max);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:3rem;
+    align-items:center;
+    max-width:none;
+    padding-bottom:1rem;
+  }
+  .hero h1{
+    font-size:clamp(1.5rem, 2.2vw, 1.95rem);
+    line-height:1.35;
+    max-width:28ch;
+  }
+  .hero .lede{
+    font-size:1.05rem;
+    color:var(--ink-soft);
+    max-width:42ch;
+  }
+  .hero-figure svg{width:100%; height:auto; display:block;}
+  .hero-figure{padding:0 0.5rem;}
+
+  .draw{
+    stroke-dasharray:340;
+    stroke-dashoffset:340;
+    animation:draw 1.4s ease forwards;
+  }
+  .fade-node{opacity:0; animation:fadeIn 0.6s ease forwards;}
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  @keyframes fadeIn{to{opacity:1;}}
+
+  /* ---------- About ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns:190px minmax(0,600px);
+    gap:2.8rem;
+    align-items:start;
+  }
+  .about-profile{min-width:0;}
+  .profile-photo{
+    display:block;
+    width:180px;
+    height:225px;
+    max-width:100%;
+    object-fit:cover;
+    object-position:center;
+    border-radius:7px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    margin:0 0 1.25rem;
+  }
+  .about-facts{
+    font-family:var(--mono);
+    font-size:0.78rem;
+    color:var(--ink-faint);
+    line-height:2.1;
+    white-space:nowrap;
+  }
+  .about-facts strong{color:var(--ink-soft); font-weight:500;}
+
+  /* ---------- Education ---------- */
+  .edu{padding:1.1rem 0; border-top:1px solid var(--line);}
+  .edu:first-of-type{border-top:1px solid var(--line);}
+  .edu-school{font-family:var(--serif); font-weight:500; font-size:1.05rem; margin:0 0 0.2rem;}
+  .edu-degree{font-size:0.94rem; color:var(--ink-soft); margin:0 0 0.3rem;}
+  .edu-detail{font-family:var(--mono); font-size:0.78rem; color:var(--ink-faint); margin:0 0 0.15rem;}
+
+  /* ---------- Research ---------- */
+  .research-grid{
+    display:grid;
+    grid-template-columns:260px minmax(0,540px);
+    gap:2.8rem;
+  }
+  .research-list{
+    display:flex;
+    flex-direction:column;
+    gap:0.6rem;
+    margin:0 0 1.4rem;
+  }
+  .research-tag{
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:0.55rem 0.8rem;
+    font-size:0.85rem;
+    color:var(--ink);
+    background:var(--panel);
+  }
+  .research-sub{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:var(--ink-faint);
+    margin:0 0 0.8rem;
+  }
+
+  /* ---------- Publications ---------- */
+  .pub{
+    display:grid;
+    grid-template-columns:3.4rem 1fr;
+    gap:1.2rem;
+    padding:1.5rem 0;
+    border-top:1px solid var(--line);
+  }
+  .pub:first-of-type{border-top:1px solid var(--line);}
+  .pub-year{
+    font-family:var(--mono);
+    font-size:0.85rem;
+    color:var(--accent-warm);
+    padding-top:0.15rem;
+  }
+  .pub-title{margin:0 0 0.35rem; font-family:var(--serif); font-weight:500; font-size:1.05rem;}
+  .pub-title a{color:inherit; text-decoration:none; border-bottom:1px solid var(--line);}
+  .pub-title a:hover{border-color:var(--accent);}
+  .pub-venue{font-size:0.9rem; color:var(--ink-faint); margin:0;}
+  .pub-authors{font-size:0.88rem; color:var(--ink-soft); margin:0.25rem 0 0;}
+
+  .scholar-link{
+    display:inline-block;
+    margin-top:1.6rem;
+    font-size:0.9rem;
+    text-decoration:none;
+    border-bottom:1px solid var(--accent);
+    padding-bottom:1px;
+  }
+
+  /* ---------- Experience ---------- */
+  .job{
+    display:grid;
+    grid-template-columns:9rem 1fr;
+    gap:1.4rem;
+    padding-bottom:2.6rem;
+  }
+  .job:last-child{padding-bottom:0;}
+  .job-time{
+    font-family:var(--mono);
+    font-size:0.78rem;
+    color:var(--ink-faint);
+    padding-top:0.2rem;
+  }
+  .job-role{font-family:var(--serif); font-size:1.1rem; font-weight:500; margin:0 0 0.15rem;}
+  .job-org{font-size:0.92rem; color:var(--ink-soft); margin:0 0 0.8rem;}
+  .job ul{margin:0; padding-left:1.1rem; color:var(--ink-soft);}
+  .job li{margin-bottom:0.35rem; font-size:0.94rem;}
+  .job-subjects{font-size:0.85rem; color:var(--ink-faint); margin:0 0 0.6rem;}
+
+  /* ---------- Projects ---------- */
+  .proj-group{margin-bottom:2.6rem;}
+  .proj-group:last-child{margin-bottom:0;}
+  .proj-group h3{font-size:0.78rem; font-family:var(--mono); font-weight:400; color:var(--ink-faint); margin-bottom:1.4rem;}
+  .proj{padding:1.3rem 0; border-top:1px solid var(--line);}
+  .proj-head{display:flex; justify-content:space-between; align-items:baseline; gap:1rem; flex-wrap:wrap;}
+  .proj-title{font-family:var(--serif); font-size:1.02rem; font-weight:500; margin:0;}
+  .proj-meta{font-family:var(--mono); font-size:0.76rem; color:var(--ink-faint); white-space:nowrap;}
+  .proj-actions{display:flex; align-items:baseline; gap:0.8rem; flex-wrap:wrap;}
+  .proj-link{font-family:var(--mono); font-size:0.76rem; color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent);}
+  .proj-link:hover{color:var(--ink);}
+  .proj p{font-size:0.94rem; margin-top:0.5rem;}
+  .proj-stack{font-size:0.82rem; color:var(--accent); margin-top:0.5rem;}
+
+  /* ---------- Skills & Awards ---------- */
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:3rem;}
+  .skill-row{margin-bottom:1.3rem;}
+  .skill-row:last-child{margin-bottom:0;}
+  .skill-label{font-size:0.82rem; color:var(--ink-faint); margin-bottom:0.35rem;}
+  .skill-values{font-size:0.95rem; color:var(--ink);}
+  .award{padding:0.9rem 0; border-top:1px solid var(--line); font-size:0.94rem; color:var(--ink-soft);}
+  .award:last-child{padding-bottom:0;}
+
+  /* ---------- Contact ---------- */
+  .contact-list{list-style:none; margin:1.4rem 0 0; padding:0;}
+  .contact-list li{margin-bottom:0.9rem; font-size:1rem;}
+  .contact-list .label{
+    display:inline-block;
+    width:6.5rem;
+    font-family:var(--mono);
+    font-size:0.78rem;
+    color:var(--ink-faint);
+  }
+  .contact-list a{text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:1px;}
+  .contact-list a:hover{border-color:var(--accent);}
+
+  footer{
+    max-width:var(--max);
+    margin:5rem auto 0;
+    padding-top:1.6rem;
+    border-top:1px solid var(--line);
+    font-size:0.8rem;
+    color:var(--ink-faint);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px){
+    .spine{display:none;}
+    .mobile-bar{
+      display:flex;
+      position:sticky; top:0;
+      background:var(--paper);
+      border-bottom:1px solid var(--line);
+      padding:1rem 1.4rem;
+      justify-content:space-between;
+      align-items:center;
+      z-index:20;
+      overflow-x:auto;
+      gap:1.2rem;
+    }
+    .mobile-bar .mark{font-family:var(--serif); font-weight:600; text-decoration:none; color:var(--ink); flex:0 0 auto;}
+    .mobile-bar nav{display:flex; gap:1.1rem; overflow-x:auto;}
+    .mobile-bar nav a{
+      font-size:0.85rem; color:var(--ink-soft); text-decoration:none; white-space:nowrap;
+    }
+    main{margin-left:0; padding:0 1.4rem 4rem;}
+    section{padding-top:3.2rem;}
+    .hero{grid-template-columns:1fr; gap:1.8rem;}
+    .hero-figure{order:-1; max-width:280px; margin:0 auto;}
+    .about-grid{grid-template-columns:1fr; gap:1.4rem;}
+    .about-profile{display:grid; grid-template-columns:132px 1fr; gap:1.2rem; align-items:start;}
+    .profile-photo{width:132px; height:165px; max-width:132px; margin:0;}
+    .research-grid{grid-template-columns:1fr; gap:1.4rem;}
+    .about-facts{white-space:normal; line-height:1.9;}
+    .job{grid-template-columns:1fr; gap:0.4rem;}
+    .two-col{grid-template-columns:1fr; gap:2rem;}
+    .pub{grid-template-columns:2.4rem 1fr;}
+  }
+  @media (max-width: 520px){
+    .about-profile{grid-template-columns:1fr;}
+    .profile-photo{width:160px; height:200px; max-width:160px;}
+  }
+</style>
+</head>
+<body>
+
+  <a href="#top" class="skip-link">Skip to main content</a>
+
+  <div class="mobile-bar">
+    <a href="#top" class="mark">SR</a>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#education">Education</a>
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+
+  <nav class="spine" aria-label="Primary">
+    <div class="spine-top">
+      <a href="#top" class="mark">Md Saidur Rahman</a>
+      <div class="mark-sub">PhD Student<br>Computer Science, FSU</div>
+      <nav>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#research">Research</a></li>
+          <li><a href="#publications">Publications</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#skills">Skills &amp; awards</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </nav>
+
+  <main id="top">
+
+    <section class="hero">
+      <div>
+        <h1>My research explores CXL-enabled disaggregated memory and its implications for distributed systems and container infrastructure.</h1>
+      </div>
+      <div class="hero-figure">
+        <svg viewBox="0 0 640 400" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hero-svg-title hero-svg-desc">
+          <title id="hero-svg-title">CXL-based disaggregated memory architecture</title>
+          <desc id="hero-svg-desc">Three compute nodes connect through a CXL fabric to two shared memory pools.</desc>
+
+          <!-- compute -> fabric -->
+          <path d="M100,76 L272,163" stroke="var(--accent)" stroke-width="1.4" class="draw" style="stroke-dasharray:200; stroke-dashoffset:200; animation-delay:0.2s"/>
+          <path d="M320,76 L320,135" stroke="var(--accent)" stroke-width="1.4" class="draw" style="stroke-dasharray:65; stroke-dashoffset:65; animation-delay:0.35s"/>
+          <path d="M540,76 L368,163" stroke="var(--accent)" stroke-width="1.4" class="draw" style="stroke-dasharray:200; stroke-dashoffset:200; animation-delay:0.5s"/>
+          <circle cx="100" cy="76" r="3" fill="var(--accent)" class="fade-node" style="animation-delay:0.2s"/>
+          <circle cx="320" cy="76" r="3" fill="var(--accent)" class="fade-node" style="animation-delay:0.35s"/>
+          <circle cx="540" cy="76" r="3" fill="var(--accent)" class="fade-node" style="animation-delay:0.5s"/>
+
+          <!-- compute nodes -->
+          <g class="fade-node" style="animation-delay:0.6s">
+            <rect x="30" y="20" width="140" height="56" rx="6" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="100" y="53" font-family="IBM Plex Mono" font-size="13" fill="var(--ink)" text-anchor="middle">Compute</text>
+          </g>
+          <g class="fade-node" style="animation-delay:0.7s">
+            <rect x="250" y="20" width="140" height="56" rx="6" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="320" y="53" font-family="IBM Plex Mono" font-size="13" fill="var(--ink)" text-anchor="middle">Compute</text>
+          </g>
+          <g class="fade-node" style="animation-delay:0.8s">
+            <rect x="470" y="20" width="140" height="56" rx="6" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="540" y="53" font-family="IBM Plex Mono" font-size="13" fill="var(--ink)" text-anchor="middle">Compute</text>
+          </g>
+
+          <!-- CXL fabric -->
+          <g class="fade-node" style="animation-delay:0.1s">
+            <polygon points="320,135 367.6,162.5 367.6,217.5 320,245 272.4,217.5 272.4,162.5" stroke="var(--accent)" stroke-width="1.6"/>
+            <text x="320" y="184" font-family="IBM Plex Mono" font-size="12" fill="var(--ink)" text-anchor="middle">CXL</text>
+            <text x="320" y="199" font-family="IBM Plex Mono" font-size="12" fill="var(--ink)" text-anchor="middle">Fabric</text>
+          </g>
+
+          <!-- fabric -> memory pools -->
+          <path d="M320,245 L320,270" stroke="var(--accent-warm)" stroke-width="1.4" class="draw" style="stroke-dasharray:30; stroke-dashoffset:30; animation-delay:0.95s"/>
+          <circle cx="320" cy="270" r="3" fill="var(--accent-warm)" class="fade-node" style="animation-delay:1.1s"/>
+          <path d="M320,270 L170,270 L170,300" stroke="var(--accent-warm)" stroke-width="1.4" class="draw" style="stroke-dasharray:190; stroke-dashoffset:190; animation-delay:1.1s"/>
+          <path d="M320,270 L470,270 L470,300" stroke="var(--accent-warm)" stroke-width="1.4" class="draw" style="stroke-dasharray:190; stroke-dashoffset:190; animation-delay:1.1s"/>
+
+          <!-- memory pools -->
+          <g class="fade-node" style="animation-delay:1.3s">
+            <text x="170" y="292" font-family="IBM Plex Mono" font-size="12" fill="var(--accent-warm)" text-anchor="middle">Memory Pool</text>
+            <rect x="70" y="300" width="200" height="70" rx="6" stroke="var(--accent-warm)" stroke-width="1.5"/>
+            <rect x="90" y="320" width="20" height="30" fill="none" stroke="var(--ink-faint)" stroke-width="1.2"/>
+            <rect x="118" y="320" width="20" height="30" fill="var(--accent)"/>
+            <rect x="146" y="320" width="20" height="30" fill="none" stroke="var(--ink-faint)" stroke-width="1.2"/>
+            <rect x="174" y="320" width="20" height="30" fill="var(--accent-warm)"/>
+            <rect x="202" y="320" width="20" height="30" fill="none" stroke="var(--ink-faint)" stroke-width="1.2"/>
+            <rect x="230" y="320" width="20" height="30" fill="none" stroke="var(--ink-faint)" stroke-width="1.2"/>
+          </g>
+          <g class="fade-node" style="animation-delay:1.4s">
+            <text x="470" y="292" font-family="IBM Plex Mono" font-size="12" fill="var(--accent-warm)" text-anchor="middle">Memory Pool</text>
+            <rect x="370" y="300" width="200" height="70" rx="6" stroke="var(--accent-warm)" stroke-width="1.5"/>
+            <rect x="390" y="320" width="20" height="30" fill="none" stroke="var(--ink-faint)" stroke-width="1.2"/>
+            <rect x="418" y="320" width="20" height="30" fill="none" stroke="var(--ink-faint)" stroke-width="1.2"/>
+            <rect x="446" y="320" width="20" height="30" fill="var(--accent-warm)"/>
+            <rect x="474" y="320" width="20" height="30" fill="none" stroke="var(--ink-faint)" stroke-width="1.2"/>
+            <rect x="502" y="320" width="20" height="30" fill="var(--accent)"/>
+            <rect x="530" y="320" width="20" height="30" fill="none" stroke="var(--ink-faint)" stroke-width="1.2"/>
+          </g>
+
+        </svg>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section id="about">
+      <h2 class="kicker">About</h2>
+      <div class="about-grid">
+        <div class="about-profile">
+          <img src="assets/saidur-profile.jpg" alt="Md. Saidur Rahman" class="profile-photo" width="720" height="900">
+          <div class="about-facts">
+            <div><strong>Based in</strong><br>Tallahassee, FL</div><br>
+            <div><strong>PhD started</strong><br>Aug 2023</div><br>
+            <div><strong>Prior degree</strong><br>BSc, NSU Dhaka</div>
+          </div>
+        </div>
+        <div style="max-width:60ch;">
+          <p>I'm a PhD student in the Department of Computer Science at Florida State University, where I also work as a graduate teaching assistant, helping run undergraduate and graduate courses, lab sessions, and office hours.</p>
+          <p>My research sits at the intersection of disaggregated memory and distributed systems. I'm interested in what it takes to coordinate compute and memory once they're no longer bound to the same box, and pooled instead across a data center.</p>
+          <p>Before starting my PhD, I earned a BSc in Computer Science and Engineering from North South University in Dhaka, Bangladesh, graduating Magna Cum Laude, and spent several years as a lab instructor teaching databases, computer architecture, and digital logic design.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section id="education">
+      <h2 class="kicker">Education</h2>
+
+      <div class="edu">
+        <p class="edu-school">Florida State University</p>
+        <p class="edu-degree">Ph.D. in Computer Science, Aug 2023 – Present</p>
+        <p class="edu-detail">GPA: 3.96/4.00 · Advisor: Dr. Weikuan Yu</p>
+        <p class="edu-detail">Tallahassee, Florida</p>
+      </div>
+
+      <div class="edu">
+        <p class="edu-school">North South University</p>
+        <p class="edu-degree">B.Sc. in Computer Science and Engineering, Jan 2013 – Apr 2017</p>
+        <p class="edu-detail">CGPA: 3.70/4.00 · Magna Cum Laude</p>
+        <p class="edu-detail">Dhaka, Bangladesh</p>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section id="research">
+      <h2 class="kicker">Research interests</h2>
+      <div class="research-grid">
+        <div>
+          <div class="research-list">
+            <span class="research-tag">Disaggregated memory systems</span>
+            <span class="research-tag">Distributed systems</span>
+            <span class="research-tag">CXL-based architectures</span>
+          </div>
+        </div>
+        <div>
+          <p class="research-sub">Current research</p>
+          <p>My research explores system support for disaggregated memory, with an emphasis on CXL-attached memory pools and distributed resource sharing. I am particularly interested in how operating-system and container mechanisms should evolve when memory is remote, shared, and accessed through a fabric. My current work investigates CXL-based mechanisms for reducing data movement and startup overhead in containerized systems.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section id="publications">
+      <h2 class="kicker">Publications</h2>
+
+      <div class="pub">
+        <div class="pub-year">2017</div>
+        <div>
+          <p class="pub-title"><a href="https://doi.org/10.1109/UEMCON.2017.8248983" target="_blank" rel="noopener">Web Based Electric Home Appliance Controller and Monitoring System</a></p>
+          <p class="pub-venue">IEEE 8th Annual Ubiquitous Computing, Electronics and Mobile Communication Conference (UEMCON), 2017</p>
+          <p class="pub-authors"><strong>Md. Saidur Rahman</strong>, Saqif Masud, Shahida Sultana, Mohammad Rezaul Bari</p>
+        </div>
+      </div>
+
+      <div class="pub">
+        <div class="pub-year">2017</div>
+        <div>
+          <p class="pub-title"><a href="https://doi.org/10.1007/978-3-319-56660-3_2" target="_blank" rel="noopener">Analyzing Life Insurance Data with Different Classification Techniques for Customers' Behavior Analysis</a></p>
+          <p class="pub-venue">Advanced Topics in Intelligent Information and Database Systems, pp. 15–25, 2017</p>
+          <p class="pub-authors"><strong>Md. Saidur Rahman</strong>, Kazi Zawad Arefin, Saqif Masud, Shahida Sultana, Rashedur M. Rahman</p>
+        </div>
+      </div>
+
+      <div class="pub">
+        <div class="pub-year">2016</div>
+        <div>
+          <p class="pub-title"><a href="https://doi.org/10.1109/ICIS.2016.7550757" target="_blank" rel="noopener">A Personalized Music Recommender Service Based on Fuzzy Inference System</a></p>
+          <p class="pub-venue">IEEE/ACIS 15th International Conference on Computer and Information Science (ICIS), 2016</p>
+          <p class="pub-authors"><strong>Md. Saidur Rahman</strong>, Md. Saifur Rahman, Shahnewaz Ul Islam Chowdhury, Ashfaq Mahmood, Rashedur M. Rahman</p>
+        </div>
+      </div>
+
+      <a class="scholar-link" href="https://scholar.google.com/citations?user=A7Hoo1oAAAAJ&hl=en" target="_blank" rel="noopener">Full list on Google Scholar</a>
+    </section>
+
+    <hr class="rule">
+
+    <section id="experience">
+      <h2 class="kicker">Experience</h2>
+
+      <div class="job">
+        <div class="job-time">Fall 2023 —<br>Present</div>
+        <div>
+          <p class="job-role">Graduate Teaching Assistant</p>
+          <p class="job-org">Department of Computer Science, Florida State University</p>
+          <ul>
+            <li>Assist in undergraduate and graduate-level courses</li>
+            <li>Run lab sessions and hold office hours</li>
+            <li>Grade assignments and exams</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="job-time">Jan 2018 —<br>Jun 2023</div>
+        <div>
+          <p class="job-role">Lab Instructor</p>
+          <p class="job-org">ECE Department, North South University, Dhaka</p>
+          <p class="job-subjects">Database Systems · Computer Organization &amp; Architecture · Digital Logic Design · Digital Electronics &amp; Microprocessor Design</p>
+          <ul>
+            <li>Delivered lectures on lab topics</li>
+            <li>Monitored students' lab work</li>
+            <li>Assisted faculty with grading</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section id="projects">
+      <h2 class="kicker">Projects</h2>
+
+      <div class="proj-group">
+        <div class="proj" style="border-top:none; padding-top:0;">
+          <div class="proj-head">
+            <p class="proj-title">CXLStart</p>
+            <div class="proj-actions">
+              <span class="proj-meta">Ongoing PhD research · 2026 – Present</span>
+              <a class="proj-link" href="https://github.com/castl22/CXLStart" target="_blank" rel="noopener">GitHub ↗</a>
+            </div>
+          </div>
+          <p>A Linux research prototype investigating how CXL-attached memory can support faster container startup through shared host-local memory pools and reusable container data.</p>
+          <p class="proj-stack">Linux · C/C++ · CXL · QEMU · DAX/FS-DAX · EROFS · runc</p>
+        </div>
+      </div>
+
+      <p class="research-sub">Selected earlier projects</p>
+
+      <div class="proj-group">
+        <h3>Academic project</h3>
+        <div class="proj">
+          <div class="proj-head">
+            <p class="proj-title">Electric Home Appliance Controller</p>
+            <span class="proj-meta">Sep 2016 – Apr 2017</span>
+          </div>
+          <p>Gives a user control over home appliance switches from anywhere, combining a web app, an Android app, and microcontroller-based hardware. Supervised by Dr. Mohammad Rezaul Bari.</p>
+          <p class="proj-stack">Android · Retrofit · GSON · PHP · Slim · PDO · MySQL · JWT</p>
+        </div>
+      </div>
+
+      <div class="proj-group">
+        <h3>Course projects</h3>
+
+        <div class="proj">
+          <div class="proj-head">
+            <p class="proj-title">Digital Door Lock</p>
+            <span class="proj-meta">Sep – Dec 2016 · Microprocessor</span>
+          </div>
+          <p>A PIC16F877-based lock with a magnetic pull-leave mechanism, 16×2 LCD, and keypad. Users enter a password to unlock, and can change it with a pre-stored master password. Supervised by Dr. Atiqur Rahman Ahad.</p>
+        </div>
+
+        <div class="proj">
+          <div class="proj-head">
+            <p class="proj-title">Online Classroom</p>
+            <span class="proj-meta">Jan – Apr 2015 · Database</span>
+          </div>
+          <p>A web app for student–teacher communication in the spirit of Piazza or Google Classroom. Supervised by Dr. Rashedur M. Rahman.</p>
+          <p class="proj-stack">PHP · PDO · HTML · CSS · MySQL</p>
+        </div>
+
+        <div class="proj">
+          <div class="proj-head">
+            <p class="proj-title">Shonabondhu</p>
+            <span class="proj-meta">Jan – Apr 2017 · Operating Systems</span>
+          </div>
+          <p>An Android application built for an ongoing flood-research project, visualizing water-level sensor data. Supervised by Dr. Nova Ahmed.</p>
+          <p class="proj-stack">PHP · Android · Async data calls · MPAndroidChart · MySQL</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section id="skills">
+      <h2 class="kicker">Skills &amp; awards</h2>
+      <div class="two-col">
+        <div>
+          <div class="skill-row">
+            <div class="skill-label">Systems &amp; programming</div>
+            <div class="skill-values">C · C++ · Python · Bash · Linux · Git</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-label">Virtualization &amp; containers</div>
+            <div class="skill-values">QEMU · Docker · runc</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-label">Memory &amp; storage systems</div>
+            <div class="skill-values">CXL · RDMA/InfiniBand · DAX/FS-DAX · EROFS · mmap · io_uring</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-label">Web &amp; databases</div>
+            <div class="skill-values">JavaScript · PHP · Node.js · MySQL · PostgreSQL</div>
+          </div>
+        </div>
+        <div>
+          <div class="award">Magna Cum Laude, North South University, 2018</div>
+          <div class="award">50% tuition merit waiver, North South University</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section id="contact">
+      <h2 class="kicker">Contact</h2>
+      <div class="two-col">
+        <div>
+          <p>I welcome conversations about systems research, CXL, disaggregated memory, distributed systems, and potential research collaborations.</p>
+        </div>
+        <div>
+          <ul class="contact-list">
+            <li><span class="label">Email</span><a href="mailto:mr23v@fsu.edu">mr23v@fsu.edu</a></li>
+            <li><span class="label">LinkedIn</span><a href="https://www.linkedin.com/in/md-saidur-rahman-saurav" target="_blank" rel="noopener">md-saidur-rahman-saurav</a></li>
+            <li><span class="label">GitHub</span><a href="https://github.com/saidur47" target="_blank" rel="noopener">github.com/saidur47</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © 2026 Md. Saidur Rahman.
+    </footer>
+  </main>
+
+  <script>
+    const links = document.querySelectorAll('.spine nav a[href^="#"], .mobile-bar nav a[href^="#"]');
+    const sections = Array.from(links).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+    function onScroll(){
+      let current = sections[0];
+      const y = window.scrollY + window.innerHeight * 0.25;
+      sections.forEach(sec => { if (sec.offsetTop <= y) current = sec; });
+      links.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current.id);
+      });
+    }
+    document.addEventListener('scroll', onScroll, { passive:true });
+    onScroll();
+  </script>
+
+</body>
+</html>
